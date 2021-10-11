@@ -216,7 +216,7 @@ def clr():
 def update():
     stuff_to_update = ['wilfred.py', '.version']
     for fl in stuff_to_update:
-        dat = urllib.request.urlopen("https://github.com/localhost-Security/wilfred/tree/master/" + fl).read()
+        dat = urllib.request.urlopen("https://github.com/localhost-Security/wilfred/" + fl).read()
         file = open(fl, 'wb')
         file.write(dat)
         file.close()
