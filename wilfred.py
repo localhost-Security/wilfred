@@ -225,7 +225,7 @@ def update():
     sys.exit(1)
 
 print(gold+'\n\tChecking For Updates...\r\n'+W)
-ver = urllib.request.urlopen("https://github.com/localhost-Security/wilfred/.version").read().decode('utf-8')
+ver = urllib.request.urlopen("https://github.com/localhost-Security/wilfred/blob/master/.version").read().decode('utf-8')
 verl = ''
 try:
     verl = open(".version", 'r').read()
