@@ -216,7 +216,7 @@ def clr():
 def update():
     stuff_to_update = ['wilfred.py', '.version']
     for fl in stuff_to_update:
-        dat = urllib.request.urlopen("https://github.com/localhost-Security/wilfred/blob/master/" + fl).read()
+        dat = urllib.request.urlopen("https://raw.githubusercontent.com/localhost-Security/wilfred/master/" + fl).read()
         file = open(fl, 'wb')
         file.write(dat)
         file.close()
@@ -225,7 +225,7 @@ def update():
     sys.exit(1)
 
 print(gold+'\n\tChecking For Updates...\r\n'+W)
-ver = urllib.request.urlopen("https://github.com/localhost-Security/wilfred/blob/master/.version").read().decode('utf-8')
+ver = urllib.request.urlopen("https://raw.githubusercontent.com/localhost-Security/wilfred/master/.version").read().decode('utf-8')
 verl = ''
 try:
     verl = open(".version", 'r').read()
