@@ -1,4 +1,4 @@
-# Wilfred
+# Wilfred The Crypto Bot
 Wilfred is a Coinbase Pro Crypto trading Bot
 
 ## Installing Wilfred:
