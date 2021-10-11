@@ -216,12 +216,13 @@ def clr():
 def update():
     stuff_to_update = ['wilfred.py', '.version']
     for fl in stuff_to_update:
-        dat = urllib.request.urlopen("https://github.com/localhost-Security/wilfred/wilfred.py" + fl).read()
+        dat = urllib.request.urlopen("https://github.com/localhost-Security/wilfred/tree/master/" + fl).read()
         file = open(fl, 'wb')
         file.write(dat)
         file.close()
     print(gold+'\r\nUpdated Successfull !!!!')
     print('\tPlease Run The Script Again...'+W)
+    sys.exit(1)
 
 print(gold+'\n\tChecking For Updates...\r\n'+W)
 ver = urllib.request.urlopen("https://github.com/localhost-Security/wilfred/.version").read().decode('utf-8')
