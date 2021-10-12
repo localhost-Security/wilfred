@@ -152,7 +152,7 @@ def bot_config():
             global sell_amount
             sell_amount = float(input("\r\nPlease set how much of your BTC you would like to sell\nwhen sell price has been triggered..\r\n\r\n"+gold+ f"[{hostip}]"+W+":"+purp+"wilfred"+W+red+"/crypto-bot/"+W+"> "))
             global buy_price
-            buy_price = float(input(f"\r\nPlease set a buy price..\r\n\n[current BTC worth - {current_price:,}]\n[currently set sell price - {sell_price:,}]\r\n\r\n"+gold+ f"[{hostip}]"+W+":"+purp+"wilfred"+W+red+"/crypto-bot/"+W+"> "))
+            buy_price = float(input(f"\r\nPlease set a buy price..\r\n\n"+green+f"[current BTC worth - {current_price:,}]\n[currently set sell price - {sell_price:,}]"+W+"\r\n\r\n"+gold+ f"[{hostip}]"+W+":"+purp+"wilfred"+W+red+"/crypto-bot/"+W+"> "))
             global buy_amount
             buy_amount = float(input(f"\r\nPlease set a amount of BTC to buy when buy price of {buy_price:,} has been triggered..\r\n\r\n"+gold+ f"[{hostip}]"+W+":"+purp+"wilfred"+W+red+"/crypto-bot/"+W+"> "))
             global aggression
@@ -231,18 +231,21 @@ def update():
     sys.exit(1)
 
 print(gold+'\n\tChecking For Updates...\r\n'+W)
+time.sleep(2.5)
 ver = urllib.request.urlopen("https://raw.githubusercontent.com/localhost-Security/wilfred/master/.version").read().decode('utf-8')
-verl = get_version()
+#verl = get_version()
+verl = ''
 try:
-    verl = open(".version", 'r').read()
+    verl = open(".version", 'r').read().strip
 except Exception:
-    pass
+    get_version()
+    #pass
 if ver != verl:
     print('\r\nAn Update is Available....')
     print('\tStarting Update...')
     update()
 print("Your Version is Up-To-Date")
-print(gold+'\r\Waking up Wilfred from his nap...\n\n'+W)
+print(gold+'\rWaking up Wilfred from his nap...\n\n'+W)
 time.sleep(2.5)
 
 if __name__ == '__main__':
