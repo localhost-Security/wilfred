@@ -236,7 +236,7 @@ ver = urllib.request.urlopen("https://raw.githubusercontent.com/localhost-Securi
 #verl = get_version()
 verl = ''
 try:
-    verl = open(".version", 'r').read().strip
+    verl = open(".version", 'r').read()
 except Exception:
     get_version()
     #pass
