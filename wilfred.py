@@ -213,6 +213,12 @@ def clr():
     else:
         os.system("clear")
 
+def get_version():
+    try:
+        return open(".version", "r").read().strip()
+    except Exception:
+        return '1.0'
+
 def update():
     stuff_to_update = ['wilfred.py', '.version']
     for fl in stuff_to_update:
@@ -226,7 +232,7 @@ def update():
 
 print(gold+'\n\tChecking For Updates...\r\n'+W)
 ver = urllib.request.urlopen("https://raw.githubusercontent.com/localhost-Security/wilfred/master/.version").read().decode('utf-8')
-verl = ''
+verl = get_version()
 try:
     verl = open(".version", 'r').read()
 except Exception:
@@ -237,6 +243,7 @@ if ver != verl:
     update()
 print("Your Version is Up-To-Date")
 print(gold+'\r\Waking up Wilfred from his nap...\n\n'+W)
+time.sleep(2.5)
 
 if __name__ == '__main__':
     login()
