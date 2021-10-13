@@ -34,7 +34,7 @@ logo = '''
 (           \ \ /\ / /| | | |_| '__/ _ \/ _` |          )
  )           \ V  V / | | |  _| | |  __/ (_| |         (
 (             \_/\_/  |_|_|_| |_|  \___|\__,_|          )
- )                                         v1.0.0      (
+ )                        #auth - localhost-Security   (
 '-------------------------------------------------------'
 '''
 logo2 = '''
@@ -76,13 +76,13 @@ def login():
             for line in f.readlines():
                 us, pw = line.strip().split("|", 1)
                 if (user in us) and (passw in pw):
-                    print("\r\nLogin successful!")
+                    print(green+"\r\nLogin successful!"+W)
                     time.sleep(1.5)
                     main()
                 else:
-                    print("\r\nWrong username/password\r\n")
+                    print(red+"\r\nWrong username/password\r\n"+W)
                     time.sleep(1)
-                    return 0
+                    #return 0
         except Exception as a:
             print(a)
         except KeyboardInterrupt as e:
@@ -97,18 +97,21 @@ def main():
         try:
             clr()
             v_print(3, gold + f"\r\nINFO - Verbose Mode [ON]\r\nINFO - Logged in as [{hostname}]")
-            print(random.choice(colors) + logo + W)
+            print(random.choice(colors) + logo + W + green+f"[Version - {verl}]" + W)
 
             choice = input(random.choice(colors) + 
-            """\r\n
-            * type 'list-comms' to see a list of commands * 
+            """\n
+            * type 'help' to see a list of commands * 
             \r\n""" + gold + f"\r\n[{hostip}]"+W+":"+purp+"wilfred" + W + "> ")
             
             if choice == "bot":
                 bot_config()
 
-            elif choice == "list-cryptos":
+            elif choice == "list crypto":
                 list_cryptos()
+
+            elif choice == "update":
+                update()
             
             elif choice == "exit":
                 sys.exit(1)
@@ -120,7 +123,7 @@ def main():
                 login()
                 break
 
-            elif choice == "list-comms":
+            elif choice == "help":
                 helpdesk("commandlist")
 
             else:
@@ -149,7 +152,7 @@ def bot_config():
     while True:
         try:
             clr()
-            print(random.choice(colors)+logo2)
+            print(random.choice(colors)+logo2+green+f"[Version - {verl}]" + W)
             current_price = float(auth_client.get_product_ticker(product_id="BTC-USD")['price'])
             global sell_price
             sell_price = float(input(f"\r\nPlease set a sell price based on current BTC price of {current_price:,}..\r\n\r\n"+gold+ f"[{hostip}]"+W+":"+purp+"wilfred"+W+red+"/crypto-bot/"+W+"> "))
@@ -174,7 +177,8 @@ def bot_config():
             v_print(3, pink+"\r\nINFO [*] User Exit [*]"+W)
             v_print(3, pink+"WARN [*] KeyboardInterrupt [*]\r\n"+W)
             print(f"See you later {hostip}\r\n")
-            sys.exit(1) # Exit cleanly
+            main()
+            #sys.exit(1) # Exit cleanly
 
 def bot():
     while True:
@@ -210,24 +214,50 @@ def bot():
             v_print(3, gold+"\r\nINFO [*] User Exit [*]"+W)
             v_print(3, gold+"WARN [*] KeyboardInterrupt [*]\r\n"+W)
             print(f"See you later {hostip}\r\n")
-            sys.exit(1)
+            bot_config()
+            #sys.exit(1)
 
 def list_cryptos():
-    result = public_client.get_currencies()
-    for row in result:
-        print(row['id'])
-        choice = input("\r\nReturn to Main Menu? (y/n)> ")
-        if choice == "y":
+    while True:
+        try:
+            result = public_client.get_currencies()
+            for row in result:
+                print(green+"["+row['id']+"]"+gold+"-----"+row['name']+W)
+            #choice = input("\r\nReturn to Main Menu? (y/n)> ")
+            crypto = input(f"\r\nType a Crypto like 'BTC' to pull info about it...\r\n\r\n"+gold+ f"[{hostip}]"+W+":"+purp+"wilfred"+W+red+"/crypto-search/"+W+"> ")
+            results = public_client.get_product_ticker(crypto+'-USD')
+            print("\n\n"+green)
+            print(results)
+            print("\n\n"+W)
+            time.sleep(1)
+            loop_or_not = input("\nWanna look up another? (y/n)> ")
+            if loop_or_not == "y":
+                main()
+            elif loop_or_not == "n":
+                list_cryptos()
+        except Exception as o:
+            print(o)
+            v_print(3, gold+"\r\nINFO [*] Something Went Wrong [*]"+W)
+            v_print(3, gold+"WARN [*] Exception has occured [*]\r\n"+W)
+            sys.exit(1)
+        except KeyboardInterrupt as k:
+            print(k)
+            v_print(3, gold+"\r\nINFO [*] User Exit [*]"+W)
+            v_print(3, gold+"WARN [*] KeyboardInterrupt [*]\r\n"+W)
             main()
 
-def helpdesk(commlist): # nmap scan options 
+
+def helpdesk(commlist): 
     if commlist == "commandlist":
-        print("\r\nbot\t-\tStart the bot module\nlist-cryptos\t-\tdisplays a list of all crypto to trade\nupdate\t-\trun a update of\
-             the script\nlogout\t-\tlogout\nexit\t-\texit wilfred\nlist-comms\t-\tdisplays a list of commands\n")
+        print("\r\nbot\t-\tStart the bot module\nlist crypto\t-\tdisplays a list of all crypto to trade\nupdate\t-\trun a update of the script\nlogout\t-\tlogout\nexit\t-\texit wilfred\nhelp\t-\tdisplays a list of commands\n")
         time.sleep(3)
         choice = input("\r\nReturn to Main Menu? (y/n)> ")
         if choice == "y":
             main()
+        elif choice == "n":
+            helpdesk("commandlist")
+        else:
+            print("Please put valid option...")
 
 def clr():
     if os.name == "nt":
@@ -243,17 +273,29 @@ def get_version():
 
 def update():
     stuff_to_update = ['wilfred.py', '.version', 'requirements.txt']
-    for fl in stuff_to_update:
-        dat = urllib.request.urlopen("https://raw.githubusercontent.com/localhost-Security/wilfred/master/" + fl).read()
-        file = open(fl, 'wb')
-        file.write(dat)
-        file.close()
-    print(gold+'\r\nUpdated Successfully...')
-    print('\tPlease Run The Script Again...'+W)
-    sys.exit(1)
+    if ver != verl:
+        print('\r\nAn Update is Available....')
+        print('\tStarting Update...')
+        for fl in stuff_to_update:
+            dat = urllib.request.urlopen("https://raw.githubusercontent.com/localhost-Security/wilfred/master/" + fl).read()
+            file = open(fl, 'wb')
+            file.write(dat)
+            file.close()
+        print(gold+'\r\nUpdated Successfully...')
+        print('\tPlease Run The Script Again...'+W)
+        sys.exit(1)
+    
+    elif ver == verl:
+        print(green+"Your Version is Up-To-Date"+W)
+        time.sleep(1)
+        print(green+f"Running on Version [{verl}]"+W)
+        time.sleep(1)
+        print(green+"Heading back now"+W)
+        time.sleep(1.2)
+        main()
 
 print(gold+'\n\tChecking For Updates...\r\n'+W)
-time.sleep(2.5)
+time.sleep(1.5)
 ver = urllib.request.urlopen("https://raw.githubusercontent.com/localhost-Security/wilfred/master/.version").read().decode('utf-8')
 #verl = get_version()
 verl = ''
@@ -263,12 +305,15 @@ except Exception:
     get_version()
     #pass
 if ver != verl:
-    print('\r\nAn Update is Available....')
-    print('\tStarting Update...')
+    #print('\r\nAn Update is Available....')
+    #print('\tStarting Update...')
     update()
 print(green+"Your Version is Up-To-Date"+W)
-print(gold+'\rWaking up Wilfred from his nap...\n\n'+W)
-time.sleep(2.5)
+time.sleep(1)
+print(green+f"Running on Version [{verl}]"+W)
+time.sleep(1)
+print(green+'\rWaking up Wilfred from his nap...\n\n'+W)
+time.sleep(1.5)
 
 if __name__ == '__main__':
     login()
