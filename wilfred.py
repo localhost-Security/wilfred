@@ -101,13 +101,14 @@ def main():
 
             choice = input(random.choice(colors) + 
             """\r\n
-            * type 'bot' to enter the bot module 
-            * type 'logout' to logout 
-            * type 'exit' to leave 
+            * type 'list-comms' to see a list of commands * 
             \r\n""" + gold + f"\r\n[{hostip}]"+W+":"+purp+"wilfred" + W + "> ")
             
             if choice == "bot":
                 bot_config()
+
+            elif choice == "list-cryptos":
+                list_cryptos()
             
             elif choice == "exit":
                 sys.exit(1)
@@ -118,7 +119,10 @@ def main():
                 time.sleep(1)
                 login()
                 break
-            
+
+            elif choice == "list-comms":
+                helpdesk("commandlist")
+
             else:
                 print("Please enter a valid command...")
                 time.sleep(.8)
@@ -138,7 +142,7 @@ data = open('passphrase.txt', 'r').read().splitlines()
 public = data[0]
 passphrase = data[1]
 secret = data[2]
-
+public_client = cbpro.PublicClient()
 auth_client = cbpro.AuthenticatedClient(public, secret, passphrase)
 
 def bot_config():
@@ -164,6 +168,7 @@ def bot_config():
             print(i)
             v_print(3, gold+"\r\nINFO [*] Something Stopped [*]"+W)
             v_print(3, gold+"WARN [*] Exception has occured [*]\r\n"+W)
+            sys.exit(1)
         except KeyboardInterrupt as o:
             print(o)
             v_print(3, pink+"\r\nINFO [*] User Exit [*]"+W)
@@ -207,6 +212,23 @@ def bot():
             print(f"See you later {hostip}\r\n")
             sys.exit(1)
 
+def list_cryptos():
+    result = public_client.get_currencies()
+    for row in result:
+        print(row['id'])
+        choice = input("\r\nReturn to Main Menu? (y/n)> ")
+        if choice == "y":
+            main()
+
+def helpdesk(commlist): # nmap scan options 
+    if commlist == "commandlist":
+        print("\r\nbot\t-\tStart the bot module\nlist-cryptos\t-\tdisplays a list of all crypto to trade\nupdate\t-\trun a update of\
+             the script\nlogout\t-\tlogout\nexit\t-\texit wilfred\nlist-comms\t-\tdisplays a list of commands\n")
+        time.sleep(3)
+        choice = input("\r\nReturn to Main Menu? (y/n)> ")
+        if choice == "y":
+            main()
+
 def clr():
     if os.name == "nt":
         os.system("cls")
@@ -220,13 +242,13 @@ def get_version():
         return '1.0'
 
 def update():
-    stuff_to_update = ['wilfred.py', '.version']
+    stuff_to_update = ['wilfred.py', '.version', 'requirements.txt']
     for fl in stuff_to_update:
         dat = urllib.request.urlopen("https://raw.githubusercontent.com/localhost-Security/wilfred/master/" + fl).read()
         file = open(fl, 'wb')
         file.write(dat)
         file.close()
-    print(gold+'\r\nUpdated Successfull !!!!')
+    print(gold+'\r\nUpdated Successfully...')
     print('\tPlease Run The Script Again...'+W)
     sys.exit(1)
 
@@ -244,7 +266,7 @@ if ver != verl:
     print('\r\nAn Update is Available....')
     print('\tStarting Update...')
     update()
-print("Your Version is Up-To-Date")
+print(green+"Your Version is Up-To-Date"+W)
 print(gold+'\rWaking up Wilfred from his nap...\n\n'+W)
 time.sleep(2.5)
 
