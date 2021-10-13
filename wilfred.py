@@ -232,9 +232,9 @@ def list_cryptos():
             time.sleep(1)
             loop_or_not = input("\nWanna look up another? (y/n)> ")
             if loop_or_not == "y":
-                main()
-            elif loop_or_not == "n":
                 list_cryptos()
+            elif loop_or_not == "n":
+                main()
         except Exception as o:
             print(o)
             v_print(3, gold+"\r\nINFO [*] Something Went Wrong [*]"+W)
