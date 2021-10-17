@@ -3,6 +3,8 @@
 # Wilfred The Crypto Bot
 Wilfred is a Coinbase Pro Crypto trading Bot
 
+  * [Disclaimer](#Disclaimer)
+
 ## Installing Wilfred:
 ```bash
 git clone https://github.com/localhost-Security/wilfred
