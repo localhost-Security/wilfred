@@ -1,4 +1,5 @@
 [![Python Badge]][Python Badge]
+<img src="https://img.shields.io/badge/version-1.0.1-green.svg?cacheSeconds=2592000" />
 
 # Wilfred The Crypto Bot
 Wilfred is a Coinbase Pro Crypto trading Bot
