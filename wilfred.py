@@ -6,6 +6,7 @@ import socket
 import sys
 import time
 import urllib.request
+from datetime import datetime
 
 import cbpro  # use pip to install (coin base pro)
 
@@ -77,7 +78,7 @@ def login():
                 us, pw = line.strip().split("|", 1)
                 if (user in us) and (passw in pw):
                     print(green+"\r\nLogin successful!"+W)
-                    time.sleep(1.5)
+                    time.sleep(1.3)
                     main()
                 else:
                     print(red+"\r\nWrong username/password\r\n"+W)
@@ -95,9 +96,10 @@ def login():
 def main():
     while True:
         try:
+            ts = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
             clr()
             v_print(3, gold + f"\r\nINFO - Verbose Mode [ON]\r\nINFO - Logged in as [{hostname}]")
-            print(random.choice(colors) + logo + W + green+f"[Version - {verl}]" + W)
+            print(random.choice(colors) + logo + W + green+f"[Version - {verl}]" + f"\t{ts}" + W)
 
             choice = input(random.choice(colors) + 
             """\n
@@ -136,9 +138,17 @@ def main():
             v_print(3, gold+"WARN [*] Exception has occured [*]\r\n"+W)
         except KeyboardInterrupt as a:
             print(a)
-            v_print(3, pink+"\r\nINFO [*] User Exit [*]"+W)
-            v_print(3, pink+"WARN [*] KeyboardInterrupt [*]\r\n"+W)
-            print(f"See you later {hostip}\r\n")
+            #v_print(3, gold+"\r\nINFO [*] User Exit [*]"+W)
+            #v_print(3, gold+"WARN [*] KeyboardInterrupt [*]\r\n"+W)
+            time.sleep(1)
+            print(green+"\r\nFlushing saved Data..."+W)
+            time.sleep(1)
+            print(red+"Shutting Down Service..."+W)
+            time.sleep(1)
+            print(red+"Putting Wilfred to Sleep..."+W)
+            time.sleep(1)
+            print(green+"...............Wilfred was tucked into bed successfully"+W)
+            time.sleep(1)
             sys.exit(1) # Exit cleanly
 
 data = open('passphrase.txt', 'r').read().splitlines()
@@ -174,18 +184,16 @@ def bot_config():
             sys.exit(1)
         except KeyboardInterrupt as o:
             print(o)
-            v_print(3, pink+"\r\nINFO [*] User Exit [*]"+W)
-            v_print(3, pink+"WARN [*] KeyboardInterrupt [*]\r\n"+W)
-            print(f"See you later {hostip}\r\n")
             main()
             #sys.exit(1) # Exit cleanly
 
 def bot():
     while True:
         try:
+            ts = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
             current_price = float(auth_client.get_product_ticker(product_id="BTC-USD")['price'])
             if current_price <= buy_price:
-                buy_result = gold + f"\r\n[{hostip}]~"+W+red+f"Buying BTC"+W+f" because BTC price "+purp+f"{current_price:,}"+W+f" fell below buying price limit of "+purp+f"{buy_price:,}"+W
+                buy_result = green+f"\r\n\t[{ts}]\t[buy@{buy_price:,}]\t[sell@{sell_price:,}]"+gold + f"\r\n[{hostip}]~"+W+red+f"Buying BTC"+W+f" because BTC price "+purp+f"{current_price:,}"+W+f" fell below buying price limit of "+purp+f"{buy_price:,}"+W
                 print(buy_result)
                 auth_client.buy(size=buy_amount, order_type="market", product_id="BTC-USD")
                 with open('bought.txt', 'a') as f:
@@ -193,7 +201,7 @@ def bot():
                             print("#" * 107 + "\r\n",file=f)
             
             elif current_price >= sell_price:
-                sell_result = gold + f"\r\n[{hostip}]~"+W+green+f"Selling BTC"+W+f" because BTC price "+purp+f"{current_price:,}"+W+f" rose above selling price limit of "+purp+f"{sell_price:,}"+W
+                sell_result = green+f"\r\n\t[{ts}]\t[buy@{buy_price:,}]\t[sell@{sell_price:,}]"+gold + f"\r\n[{hostip}]~"+W+green+f"Selling BTC"+W+f" because BTC price "+purp+f"{current_price:,}"+W+f" rose above selling price limit of "+purp+f"{sell_price:,}"+W
                 print(sell_result)
                 auth_client.sell(size=sell_amount, order_type="market", product_id="BTC-USD")
                 with open('sold.txt', 'a') as f:
@@ -201,7 +209,7 @@ def bot():
                             print("#" * 107 + "\r\n",file=f)
             
             else:
-                idle = gold + f"\r\n[{hostip}]~"+W+f"Waiting for Trigger! Price is {current_price:,}!"
+                idle = green+f"\r\n\t[{ts}]\t[buy@ {buy_price:,}]\t[sell@ {sell_price:,}]"+gold + f"\r\n[{hostip}]~"+W+"Waiting for Trigger! Price is "+purp+f"{current_price:,}!"+W
                 print(idle)
             time.sleep(aggression)
         
@@ -211,9 +219,15 @@ def bot():
             print(e)
         except KeyboardInterrupt as a:
             print(a)
-            v_print(3, gold+"\r\nINFO [*] User Exit [*]"+W)
-            v_print(3, gold+"WARN [*] KeyboardInterrupt [*]\r\n"+W)
-            print(f"See you later {hostip}\r\n")
+            #v_print(3, gold+"\r\nINFO [*] User Exit [*]"+W)
+            #v_print(3, gold+"WARN [*] KeyboardInterrupt [*]\r\n"+W)
+            time.sleep(1)
+            print(red+f"Host: {hostname}@{hostip} has stopped the bot"+W)
+            time.sleep(1)
+            print(green+"Flushing bot config Data..."+W)
+            time.sleep(1)
+            print(green+"returning to bot config...\r\n"+W)
+            time.sleep(1)
             bot_config()
             #sys.exit(1)
 
@@ -242,15 +256,13 @@ def list_cryptos():
             sys.exit(1)
         except KeyboardInterrupt as k:
             print(k)
-            v_print(3, gold+"\r\nINFO [*] User Exit [*]"+W)
-            v_print(3, gold+"WARN [*] KeyboardInterrupt [*]\r\n"+W)
             main()
 
 
 def helpdesk(commlist): 
     if commlist == "commandlist":
         print("\r\nbot\t-\tStart the bot module\nlist crypto\t-\tdisplays a list of all crypto to trade\nupdate\t-\trun a update of the script\nlogout\t-\tlogout\nexit\t-\texit wilfred\nhelp\t-\tdisplays a list of commands\n")
-        time.sleep(3)
+        time.sleep(1)
         choice = input("\r\nReturn to Main Menu? (y/n)> ")
         if choice == "y":
             main()
