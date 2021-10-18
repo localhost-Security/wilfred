@@ -36,12 +36,19 @@ username: admin
 password: admin
 ```
 
-## Logging of Data
+## Logging of Data:
 ```bash
 Wilfred will log all the transactions (bought/sold) in the bought.txt and sold.txt files
 ```
-![image](https://user-images.githubusercontent.com/91699851/136724354-a7090f81-32bc-4091-8d2e-2e9ca9446a92.png)
+![image](https://user-images.githubusercontent.com/91699851/137650637-b48d973c-03e0-4846-8c82-a066f6de0e78.png)
 
+## Crypto Search:
+
+Wilfred lets you list and search crypto's your able to buy/sell/trade
+
+![image](https://user-images.githubusercontent.com/91699851/137650724-f7e81137-3e62-44cf-82cd-1c41f2042003.png)
+
+## Wilfred in action trading his heart away for you:
 ![image](https://user-images.githubusercontent.com/91699851/136724235-f1754123-3a5b-4d01-9bd4-9f290f707744.png)
 
 ## Disclaimer
