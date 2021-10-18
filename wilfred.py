@@ -284,7 +284,7 @@ def get_version():
         return '1.0'
 
 def update():
-    stuff_to_update = ['wilfred.py', '.version', 'requirements.txt']
+    stuff_to_update = ['wilfred.py', '.version', 'requirements.txt', 'README.md', 'config.txt', 'bought.txt', 'sold.txt', 'passphrase.txt']
     if ver != verl:
         print('\r\nAn Update is Available....')
         print('\tStarting Update...')
