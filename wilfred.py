@@ -284,16 +284,25 @@ def get_version():
         return '1.0'
 
 def update():
-    stuff_to_update = ['wilfred.py', '.version', 'requirements.txt', 'README.md', 'config.txt', 'bought.txt', 'sold.txt', 'passphrase.txt']
+    stuff_to_update = ['wilfred.py', '.version', 'requirements.txt', 'README.md', 'config.txt', 'bought.txt', 'sold.txt']
     if ver != verl:
         print('\r\nAn Update is Available....')
+        time.sleep(1)
         print('\tStarting Update...')
+        time.sleep(1)
+        print(green+f"grabbing files: {stuff_to_update}"+W)
         for fl in stuff_to_update:
             dat = urllib.request.urlopen("https://raw.githubusercontent.com/localhost-Security/wilfred/master/" + fl).read()
+            print(green+"Files grabbed..."+W)
+            time.sleep(1)
             file = open(fl, 'wb')
+            print(gold+"Writing Files..."+W)
+            time.sleep(1)
             file.write(dat)
             file.close()
+            print(green+"................Files Written to Successfully"+W)
         print(gold+'\r\nUpdated Successfully...')
+        time.sleep(1)
         print('\tPlease Run The Script Again...'+W)
         sys.exit(1)
     
