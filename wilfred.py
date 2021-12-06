@@ -163,15 +163,17 @@ def bot_config():
         try:
             clr()
             print(random.choice(colors)+logo2+green+f"[Version - {verl}]" + W)
-            current_price = float(auth_client.get_product_ticker(product_id="BTC-USD")['price'])
+            global coinchoice
+            coinchoice = input(f"\r\nPlease choose a coin to trade by typing its symbol such as...\n\n\t"+green+"[ETH - Etherium]     [BTC - Bitcoin]     [DOGE - Dogecoin]   [SHIB - Shiba Inu]"+W+"\r\n\n"+gold+ f"[{hostip}]"+W+":"+purp+"wilfred"+W+red+"/crypto-bot/"+W+"> ")
+            current_price = float(auth_client.get_product_ticker(product_id=coinchoice+"-USD")['price'])
             global sell_price
-            sell_price = float(input(f"\r\nPlease set a sell price based on current BTC price of {current_price:,}..\r\n\r\n"+gold+ f"[{hostip}]"+W+":"+purp+"wilfred"+W+red+"/crypto-bot/"+W+"> "))
+            sell_price = float(input(f"\r\nPlease set a sell price based on current {coinchoice} price of {current_price:,}..\r\n\r\n"+gold+ f"[{hostip}]"+W+":"+purp+"wilfred"+W+red+"/crypto-bot/"+W+"> "))
             global sell_amount
-            sell_amount = float(input("\r\nPlease set how much of your BTC you would like to sell\nwhen sell price has been triggered..\r\n\r\n"+gold+ f"[{hostip}]"+W+":"+purp+"wilfred"+W+red+"/crypto-bot/"+W+"> "))
+            sell_amount = float(input(f"\r\nPlease set how much of your {coinchoice} you would like to sell\nwhen sell price has been triggered..\r\n\r\n"+gold+ f"[{hostip}]"+W+":"+purp+"wilfred"+W+red+"/crypto-bot/"+W+"> "))
             global buy_price
-            buy_price = float(input(f"\r\nPlease set a buy price..\r\n\n"+green+f"[current BTC worth - {current_price:,}]\n[currently set sell price - {sell_price:,}]"+W+"\r\n\r\n"+gold+ f"[{hostip}]"+W+":"+purp+"wilfred"+W+red+"/crypto-bot/"+W+"> "))
+            buy_price = float(input(f"\r\nPlease set a buy price..\r\n\n"+green+f"[current {coinchoice} worth - {current_price:,}]\n[currently set sell price - {sell_price:,}]"+W+"\r\n\r\n"+gold+ f"[{hostip}]"+W+":"+purp+"wilfred"+W+red+"/crypto-bot/"+W+"> "))
             global buy_amount
-            buy_amount = float(input(f"\r\nPlease set a amount of BTC to buy when buy price of {buy_price:,} has been triggered..\r\n\r\n"+gold+ f"[{hostip}]"+W+":"+purp+"wilfred"+W+red+"/crypto-bot/"+W+"> "))
+            buy_amount = float(input(f"\r\nPlease set a amount of {coinchoice} to buy when buy price of {buy_price:,} has been triggered..\r\n\r\n"+gold+ f"[{hostip}]"+W+":"+purp+"wilfred"+W+red+"/crypto-bot/"+W+"> "))
             global aggression
             aggression = float(input("\r\nPlease set the aggression..\r\n(1-10) 1 being the most\r\n\r\n"+gold+ f"[{hostip}]"+W+":"+purp+"wilfred"+W+red+"/crypto-bot/"+W+"> "))
             clr()
@@ -188,28 +190,29 @@ def bot_config():
             #sys.exit(1) # Exit cleanly
 
 def bot():
+    print(gold+"\r\n\t[!] heres a tip... press CTRL+C to stop wilfred from trading and head back to bot config [!]\n"+W)
     while True:
         try:
             ts = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-            current_price = float(auth_client.get_product_ticker(product_id="BTC-USD")['price'])
+            current_price = float(auth_client.get_product_ticker(product_id=coinchoice+"-USD")['price'])
             if current_price <= buy_price:
-                buy_result = green+f"\r\n\t[{ts}]\t[buy@{buy_price:,}]\t[sell@{sell_price:,}]"+gold + f"\r\n[{hostip}]~"+W+red+f"Buying BTC"+W+f" because BTC price "+purp+f"{current_price:,}"+W+f" fell below buying price limit of "+purp+f"{buy_price:,}"+W
+                buy_result = green+f"\r\n\t[{ts}]\t[coin - {coinchoice}]\t[buy@{buy_price:,}]\t[sell@{sell_price:,}]"+gold + f"\r\n[{hostip}]~"+W+red+f"Buying {coinchoice}"+W+f" because {coinchoice} price "+purp+f"{current_price:,}"+W+f" fell below buying price limit of "+purp+f"{buy_price:,}"+W
                 print(buy_result)
-                auth_client.buy(size=buy_amount, order_type="market", product_id="BTC-USD")
+                auth_client.buy(size=buy_amount, order_type="market", product_id=coinchoice+"-USD")
                 with open('bought.txt', 'a') as f:
                             print(buy_result, file=f)
                             print("#" * 107 + "\r\n",file=f)
             
             elif current_price >= sell_price:
-                sell_result = green+f"\r\n\t[{ts}]\t[buy@{buy_price:,}]\t[sell@{sell_price:,}]"+gold + f"\r\n[{hostip}]~"+W+green+f"Selling BTC"+W+f" because BTC price "+purp+f"{current_price:,}"+W+f" rose above selling price limit of "+purp+f"{sell_price:,}"+W
+                sell_result = green+f"\r\n\t[{ts}]\t[coin - {coinchoice}]\t[buy@{buy_price:,}]\t[sell@{sell_price:,}]"+gold + f"\r\n[{hostip}]~"+W+green+f"Selling {coinchoice}"+W+f" because {coinchoice} price "+purp+f"{current_price:,}"+W+f" rose above selling price limit of "+purp+f"{sell_price:,}"+W
                 print(sell_result)
-                auth_client.sell(size=sell_amount, order_type="market", product_id="BTC-USD")
+                auth_client.sell(size=sell_amount, order_type="market", product_id=coinchoice+"-USD")
                 with open('sold.txt', 'a') as f:
                             print(sell_result, file=f)
                             print("#" * 107 + "\r\n",file=f)
             
             else:
-                idle = green+f"\r\n\t[{ts}]\t[buy@ {buy_price:,}]\t[sell@ {sell_price:,}]"+gold + f"\r\n[{hostip}]~"+W+"Waiting for Trigger! Price is "+purp+f"{current_price:,}!"+W
+                idle = green+f"\r\n\t[{ts}]\t[coin - {coinchoice}]\t[buy@ {buy_price:,}]\t[sell@ {sell_price:,}]"+gold + f"\r\n[{hostip}]~"+W+"Waiting for Trigger! Price is "+purp+f"{current_price:,}!"+W
                 print(idle)
             time.sleep(aggression)
         
@@ -290,17 +293,16 @@ def update():
         time.sleep(1)
         print('\tStarting Update...')
         time.sleep(1)
-        print(green+f"grabbing files: {stuff_to_update}"+W)
+        print(green+f"grabbing files: {stuff_to_update}"+gold+"\n\t[*] Expect 7 total file grabs [*]\n"+W)
         for fl in stuff_to_update:
             dat = urllib.request.urlopen("https://raw.githubusercontent.com/localhost-Security/wilfred/master/" + fl).read()
-            print(green+"Files grabbed..."+W)
+            print(green+"File grabbed..."+W)
             time.sleep(1)
             file = open(fl, 'wb')
-            print(gold+"Writing Files..."+W)
+            print(gold+"\rWriting Data to File..."+W)
             time.sleep(1)
             file.write(dat)
             file.close()
-            print(green+"................Files Written to Successfully"+W)
         print(gold+'\r\nUpdated Successfully...')
         time.sleep(1)
         print('\tPlease Run The Script Again...'+W)
